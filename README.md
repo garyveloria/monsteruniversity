@@ -17,6 +17,7 @@ npm run dev
 ```
 
 Vite prints a local URL. To test from other laptops on the same network, use the network URL printed by Vite (or configure firewall/network access). Use `?screen=1` through `?screen=8`.
+Use the on-screen **<** and **>** buttons to navigate between screens; they wrap around between screens 1 and 8.
 
 Examples:
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import mikeImage from "./assets/mike.png";
 import sulleyImage from "./assets/sulley.png";
 
@@ -11,13 +11,35 @@ function getScreenFromUrl(): number {
 }
 
 export default function App() {
-  const screen = useMemo(getScreenFromUrl, []);
+  const [screen, setScreen] = useState(getScreenFromUrl);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 40);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const handlePopState = () => setScreen(getScreenFromUrl());
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  function goToNextScreen() {
+    const nextScreen = screen % SCREEN_COUNT + 1;
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set("screen", String(nextScreen));
+    window.history.pushState({}, "", nextUrl);
+    setScreen(nextScreen);
+  }
+
+  function goToPreviousScreen() {
+    const previousScreen = (screen - 2 + SCREEN_COUNT) % SCREEN_COUNT + 1;
+    const previousUrl = new URL(window.location.href);
+    previousUrl.searchParams.set("screen", String(previousScreen));
+    window.history.pushState({}, "", previousUrl);
+    setScreen(previousScreen);
+  }
 
   const cycleMs = CYCLE_SECONDS * 1000;
   const phase = ((now % cycleMs) + cycleMs) % cycleMs / cycleMs;
@@ -77,6 +99,12 @@ export default function App() {
 
       <div className="bottom-vignette" />
       <div className="screen-label">SCREEN {screen} / {SCREEN_COUNT}</div>
+      <button className="screen-navigation screen-navigation--previous" type="button" onClick={goToPreviousScreen} aria-label="Go to previous screen">
+        &lt;
+      </button>
+      <button className="screen-navigation screen-navigation--next" type="button" onClick={goToNextScreen} aria-label="Go to next screen">
+        &gt;
+      </button>
     </main>
   );
 }
