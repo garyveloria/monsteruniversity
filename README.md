@@ -76,4 +76,4 @@ This is a practical best-effort approach, not frame-locked multi-device playback
 
 ## Important implementation note
 
-The demo uses `public/mike.png` and `public/sulley.png` for Mike and Sulley, with Sulley chasing behind Mike, plus CSS-drawn scenery. Make sure you have the appropriate rights to display the character art publicly.
+The demo uses `src/assets/mike.png` and `src/assets/sulley.png` for Mike and Sulley, with Sulley chasing behind Mike. Kapa and Roz start their infinite run when Mike and Sulley reach screen 4. The scenery is CSS-drawn. Make sure you have the appropriate rights to display the character art publicly.
